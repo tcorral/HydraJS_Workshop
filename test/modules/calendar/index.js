@@ -60,9 +60,13 @@
           return this;
         }
       };
-      oModule = Hydra.module.test('calendar', { 'Date': sinon.stub(), 'App.Calendar': Calendar, 'App.CalendarLocale_ES': function(){}, 'doc': {
+      oModule = Hydra.module.test('calendar', { 'jQuery': jQuery, 'Date': sinon.stub(window, 'Date'), 'App.Calendar': Calendar, 'App.CalendarLocale_ES': function(){}, 'doc': {
         getElementById: oStubGetElementById
       }});
+    });
+
+    afterEach( function () {
+      window.Date.restore();
     });
 
     it('should check that calendar stores the instance of Calendar to use it later', function () {
@@ -96,9 +100,19 @@
       expect( oStubSetLocale.getCall(0).args[0] instanceof oModule.mocks['App.CalendarLocale_ES']).toBeTruthy();
     });
 
-    it('should check that setContainer gets an element from document.getElementById', function () {
+    it('should check that setContainer gets an element from $("#calendarContainer")', function () {
+      sinon.stub( oModule.mocks.jQuery.fn, 'init' );
       oModule.startCalendar();
-      expect( oModule.mocks.doc.getElementById.getCall(0).args[0] ).toEqual( "calendarContainer" );
+      expect( oModule.mocks.jQuery.fn.init.getCall(0).args[0] ).toEqual( '#calendarContainer' );
+      oModule.mocks.jQuery.fn.init.restore();
+    });
+
+    // Jasmine doesn't allows to stub the Date object
+    xit('should check that setDate gets an instance of Date', function () {
+      sinon.stub( window, 'Date' );
+      oModule.startCalendar();
+      expect( oModule.mocks.Date.calledWithNew() ).toBeTruthy();
+      window.Date.restore();
     });
 
     it('should check that setDate gets an instance of Date', function () {

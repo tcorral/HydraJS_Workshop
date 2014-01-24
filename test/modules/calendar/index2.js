@@ -2,6 +2,30 @@
   'use strict';
   Hydra.setTestFramework( true );
 
+  describe('Calendar module', function (){
+
+    it('should check that calendar module has been registered', function () {
+      expect( function () {
+        Hydra.module.test('calendar');
+      }).not.toThrow();
+    });
+
+    it('should check that startCalendar is a method of calendar module', function () {
+      var oModule = Hydra.module.test('calendar');
+      expect( Object.prototype.toString.call( oModule.startCalendar ) === '[object Function]' ).toBeTruthy();
+    });
+
+    it('should check that setBehaviour is a method of calendar module', function () {
+      var oModule = Hydra.module.test('calendar');
+      expect( Object.prototype.toString.call( oModule.setBehaviour ) === '[object Function]' ).toBeTruthy();
+    });
+
+    it('should check that init is a method of calendar module', function () {
+      var oModule = Hydra.module.test('calendar');
+      expect( Object.prototype.toString.call( oModule.init ) === '[object Function]' ).toBeTruthy();
+    });
+  });
+
   describe('Calendar module startCalendar', function () {
 
     var oModule;

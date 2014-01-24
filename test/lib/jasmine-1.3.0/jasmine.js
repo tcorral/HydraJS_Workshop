@@ -1,3 +1,8 @@
+(function (Date) {
+  window.getDateInstance = function () {
+    return new Date();
+  };
+}(window.Date));
 var isCommonJS = typeof window == "undefined" && typeof exports == "object";
 
 /**
@@ -2079,7 +2084,7 @@ jasmine.Queue.prototype.next_ = function() {
         self.offset = 0;
         self.index++;
 
-        var now = new Date().getTime();
+        var now = getDateInstance().getTime();
         if (self.env.updateInterval && now - self.env.lastUpdate > self.env.updateInterval) {
           self.env.lastUpdate = now;
           self.env.setTimeout(function() {
